@@ -11,7 +11,8 @@ namespace Inibin_To_ini
     {
         static void Main(string[] args)
         {
-            args = new string[] { @"E:\2020.1.13.bak\source\repos\twq.troybin" };
+            //Test
+            //args = new string[] { @"E:\2020.1.13.bak\source\repos\twq.troybin" };
             if (args != null)
             {
                 if (args.Length > 0)
