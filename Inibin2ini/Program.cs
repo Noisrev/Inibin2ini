@@ -30,7 +30,7 @@ namespace Inibin_To_ini
                         sets.Add("default", new Dictionary<string, string>());
                         sets.Add("System", new Dictionary<string, string>());
                         //Load Hashtable
-                        List<string> keys = System.Text.Encoding.Default.GetString(Resources.inibin2).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        string[] keys = System.Text.Encoding.Default.GetString(Resources.inibin2).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                         // head
                         Dictionary<uint, string> keyHead = new Dictionary<uint, string>();
                         Dictionary<uint, string> hashMap = new Dictionary<uint, string>();
@@ -44,21 +44,30 @@ namespace Inibin_To_ini
                                     hashMap.Add(hash, key);
                             }
                         sets.Add("Unknown", new Dictionary<string, string>());
-                        var pairs = from InibinFlags flag in ini.Sets.Keys
-                                 from KeyValuePair<uint, object> pair in ini.Sets[flag].Properties
-                                 let sectionstr = from KeyValuePair<uint, string> sections in keyHead where sections.Key == pair.Key select sections.Value
-                                 let property = from KeyValuePair<uint, string> hashes in hashMap where hashes.Key == pair.Key select hashes.Value
-                                 let value = (flag == InibinFlags.FixedPointFloatListVec2 || flag == InibinFlags.FixedPointFloatListVec3 || flag == InibinFlags.FixedPointFloatListVec4 || flag == InibinFlags.Float32ListVec2 || flag
-                                 == InibinFlags.Float32ListVec3 || flag == InibinFlags.Float32ListVec4) ?
-                                     $"[{ string.Join("", from object z in (Array)pair.Value select $"{z},").TrimEnd(',')}]" : pair.Value.ToString()
-                                 select new Tuple<string, string, string>(sectionstr.Count() == 0 ? "Unknown" : sectionstr.First(), property.Count() == 0 ? pair.Key.ToString() : property.First(), value);
+                        IEnumerable<Tuple<string, string, string>> pairs = from InibinFlags flag in ini.Sets.Keys
+                                    from KeyValuePair<uint, object> pair in ini.Sets[flag].Properties
+                                    let sectionstr = from KeyValuePair<uint, string> sections in keyHead
+                                                     where sections.Key == pair.Key
+                                                     select sections.Value
+                                    let property = from KeyValuePair<uint, string> hashes in hashMap
+                                                   where hashes.Key == pair.Key
+                                                   select hashes.Value
+                                    let value = (flag == InibinFlags.FixedPointFloatListVec2 ||
+                                    flag == InibinFlags.FixedPointFloatListVec3 ||
+                                    flag == InibinFlags.FixedPointFloatListVec4 ||
+                                    flag == InibinFlags.Float32ListVec2 ||
+                                    flag == InibinFlags.Float32ListVec3 ||
+                                    flag == InibinFlags.Float32ListVec4) ? $"[{ string.Join("", from object z in (Array)pair.Value select $"{z},").TrimEnd(',')}]" : pair.Value.ToString()
+                                    select new Tuple<string, string, string>(sectionstr.Count() == 0 ? "Unknown" : sectionstr.First(),
+                                    property.Count() == 0 ? pair.Key.ToString() : property.First(), value);
                         foreach (var x in pairs)
                             sets[x.Item1].Add(x.Item2, x.Item3);
-
-                        var lines = from KeyValuePair<string, Dictionary<string, string>> i in sets
-                                 where i.Value.Count != 0
-                                 from KeyValuePair<string, string> keyValuePair in i.Value
-                                 select ((i.Value.Keys.First() == keyValuePair.Key && i.Value[keyValuePair.Key] == keyValuePair.Value) ? $"[{i.Key}]\r\n" : string.Empty) + $"{keyValuePair.Key}={keyValuePair.Value}";
+                        IEnumerable<string> lines = from KeyValuePair<string, Dictionary<string, string>> i in sets
+                                    where i.Value.Count != 0
+                                    let key1 = i.Value.Keys.First()
+                                    let value1 = i.Value[key1]
+                                    from KeyValuePair<string, string> keyValuePair in i.Value
+                                    select ((keyValuePair.Key == key1 && keyValuePair.Value == value1) ? $"[{i.Key}]\r\n" : string.Empty) + $"{keyValuePair.Key}={keyValuePair.Value}";
                         if (args.Length > 1)
                         {
                             var path = string.Empty;
