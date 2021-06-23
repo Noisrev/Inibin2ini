@@ -1,9 +1,8 @@
-﻿using Inibin_To_ini;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Fantome.Libraries.League.IO.Inibin
+namespace Inibin2ini.IO.Inibin
 {
     /// <summary>
     /// Represents binary ini files such as Troybin, Inibin and Cfgbin
@@ -26,7 +25,7 @@ namespace Fantome.Libraries.League.IO.Inibin
         /// <param name="sets">Sets to add</param>
         public InibinFile(Dictionary<InibinFlags, InibinSet> sets)
         {
-            this.Sets = sets;
+            Sets = sets;
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace Fantome.Libraries.League.IO.Inibin
                     uint valueCount = br.ReadUInt32();
                     stringDataLength = br.ReadUInt32();
 
-                    this.Sets.Add(InibinFlags.StringList, new InibinSet(br, InibinFlags.StringList, (uint)br.BaseStream.Length - stringDataLength, valueCount));
+                    Sets.Add(InibinFlags.StringList, new InibinSet(br, InibinFlags.StringList, (uint)br.BaseStream.Length - stringDataLength, valueCount));
                 }
                 else if (version == 2)
                 {
@@ -62,55 +61,55 @@ namespace Fantome.Libraries.League.IO.Inibin
 
                     if (flags.HasFlag(InibinFlags.Int32List))
                     {
-                        this.Sets.Add(InibinFlags.Int32List, new InibinSet(br, InibinFlags.Int32List));
+                        Sets.Add(InibinFlags.Int32List, new InibinSet(br, InibinFlags.Int32List));
                     }
                     if (flags.HasFlag(InibinFlags.Float32List))
                     {
-                        this.Sets.Add(InibinFlags.Float32List, new InibinSet(br, InibinFlags.Float32List));
+                        Sets.Add(InibinFlags.Float32List, new InibinSet(br, InibinFlags.Float32List));
                     }
                     if (flags.HasFlag(InibinFlags.FixedPointFloatList))
                     {
-                        this.Sets.Add(InibinFlags.FixedPointFloatList, new InibinSet(br, InibinFlags.FixedPointFloatList));
+                        Sets.Add(InibinFlags.FixedPointFloatList, new InibinSet(br, InibinFlags.FixedPointFloatList));
                     }
                     if (flags.HasFlag(InibinFlags.Int16List))
                     {
-                        this.Sets.Add(InibinFlags.Int16List, new InibinSet(br, InibinFlags.Int16List));
+                        Sets.Add(InibinFlags.Int16List, new InibinSet(br, InibinFlags.Int16List));
                     }
                     if (flags.HasFlag(InibinFlags.Int8List))
                     {
-                        this.Sets.Add(InibinFlags.Int8List, new InibinSet(br, InibinFlags.Int8List));
+                        Sets.Add(InibinFlags.Int8List, new InibinSet(br, InibinFlags.Int8List));
                     }
                     if (flags.HasFlag(InibinFlags.BitList))
                     {
-                        this.Sets.Add(InibinFlags.BitList, new InibinSet(br, InibinFlags.BitList));
+                        Sets.Add(InibinFlags.BitList, new InibinSet(br, InibinFlags.BitList));
                     }
                     if (flags.HasFlag(InibinFlags.FixedPointFloatListVec3))
                     {
-                        this.Sets.Add(InibinFlags.FixedPointFloatListVec3, new InibinSet(br, InibinFlags.FixedPointFloatListVec3));
+                        Sets.Add(InibinFlags.FixedPointFloatListVec3, new InibinSet(br, InibinFlags.FixedPointFloatListVec3));
                     }
                     if (flags.HasFlag(InibinFlags.Float32ListVec3))
                     {
-                        this.Sets.Add(InibinFlags.Float32ListVec3, new InibinSet(br, InibinFlags.Float32ListVec3));
+                        Sets.Add(InibinFlags.Float32ListVec3, new InibinSet(br, InibinFlags.Float32ListVec3));
                     }
                     if (flags.HasFlag(InibinFlags.FixedPointFloatListVec2))
                     {
-                        this.Sets.Add(InibinFlags.FixedPointFloatListVec2, new InibinSet(br, InibinFlags.FixedPointFloatListVec2));
+                        Sets.Add(InibinFlags.FixedPointFloatListVec2, new InibinSet(br, InibinFlags.FixedPointFloatListVec2));
                     }
                     if (flags.HasFlag(InibinFlags.Float32ListVec2))
                     {
-                        this.Sets.Add(InibinFlags.Float32ListVec2, new InibinSet(br, InibinFlags.Float32ListVec2));
+                        Sets.Add(InibinFlags.Float32ListVec2, new InibinSet(br, InibinFlags.Float32ListVec2));
                     }
                     if (flags.HasFlag(InibinFlags.FixedPointFloatListVec4))
                     {
-                        this.Sets.Add(InibinFlags.FixedPointFloatListVec4, new InibinSet(br, InibinFlags.FixedPointFloatListVec4));
+                        Sets.Add(InibinFlags.FixedPointFloatListVec4, new InibinSet(br, InibinFlags.FixedPointFloatListVec4));
                     }
                     if (flags.HasFlag(InibinFlags.Float32ListVec4))
                     {
-                        this.Sets.Add(InibinFlags.Float32ListVec4, new InibinSet(br, InibinFlags.Float32ListVec4));
+                        Sets.Add(InibinFlags.Float32ListVec4, new InibinSet(br, InibinFlags.Float32ListVec4));
                     }
                     if (flags.HasFlag(InibinFlags.StringList))
                     {
-                        this.Sets.Add(InibinFlags.StringList, new InibinSet(br, InibinFlags.StringList, (uint)br.BaseStream.Length - stringDataLength));
+                        Sets.Add(InibinFlags.StringList, new InibinSet(br, InibinFlags.StringList, (uint)br.BaseStream.Length - stringDataLength));
                     }
                 }
                 else
@@ -140,70 +139,70 @@ namespace Fantome.Libraries.League.IO.Inibin
                 ushort stringDataLength = 0;
                 InibinFlags flags = 0;
 
-                if (this.Sets.ContainsKey(InibinFlags.BitList))
+                if (Sets.ContainsKey(InibinFlags.BitList))
                 {
                     flags |= InibinFlags.BitList;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.FixedPointFloatList))
+                if (Sets.ContainsKey(InibinFlags.FixedPointFloatList))
                 {
                     flags |= InibinFlags.FixedPointFloatList;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.FixedPointFloatListVec2))
+                if (Sets.ContainsKey(InibinFlags.FixedPointFloatListVec2))
                 {
                     flags |= InibinFlags.FixedPointFloatListVec2;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.FixedPointFloatListVec3))
+                if (Sets.ContainsKey(InibinFlags.FixedPointFloatListVec3))
                 {
                     flags |= InibinFlags.FixedPointFloatListVec3;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.FixedPointFloatListVec4))
+                if (Sets.ContainsKey(InibinFlags.FixedPointFloatListVec4))
                 {
                     flags |= InibinFlags.FixedPointFloatListVec4;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Float32List))
+                if (Sets.ContainsKey(InibinFlags.Float32List))
                 {
                     flags |= InibinFlags.Float32List;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Float32ListVec2))
+                if (Sets.ContainsKey(InibinFlags.Float32ListVec2))
                 {
                     flags |= InibinFlags.Float32ListVec2;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Float32ListVec3))
+                if (Sets.ContainsKey(InibinFlags.Float32ListVec3))
                 {
                     flags |= InibinFlags.Float32ListVec3;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Float32ListVec4))
+                if (Sets.ContainsKey(InibinFlags.Float32ListVec4))
                 {
                     flags |= InibinFlags.Float32ListVec4;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Int16List))
+                if (Sets.ContainsKey(InibinFlags.Int16List))
                 {
                     flags |= InibinFlags.Int16List;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Int32List))
+                if (Sets.ContainsKey(InibinFlags.Int32List))
                 {
                     flags |= InibinFlags.Int32List;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.Int8List))
+                if (Sets.ContainsKey(InibinFlags.Int8List))
                 {
                     flags |= InibinFlags.Int8List;
                 }
-                if (this.Sets.ContainsKey(InibinFlags.StringList))
+                if (Sets.ContainsKey(InibinFlags.StringList))
                 {
                     flags |= InibinFlags.StringList;
 
-                    foreach (string dataString in this.Sets[InibinFlags.StringList].Properties.Values)
+                    foreach (string dataString in Sets[InibinFlags.StringList].Properties.Values)
                     {
                         stringDataLength += (ushort)(dataString.Length + 1);
                     }
                 }
 
 
-                bw.Write((byte)2);
+                bw.Write(2);
                 bw.Write(stringDataLength);
                 bw.Write((ushort)flags);
 
-                foreach (KeyValuePair<InibinFlags, InibinSet> set in this.Sets)
+                foreach (KeyValuePair<InibinFlags, InibinSet> set in Sets)
                 {
                     set.Value.Write(bw);
                 }
@@ -218,7 +217,7 @@ namespace Fantome.Libraries.League.IO.Inibin
         /// <param name="value">Value to add</param>
         public void AddValue(string section, string property, object value)
         {
-            AddValue(Program.SectionHash(section, property), value);
+            AddValue(SectionHash(section, property), value);
         }
 
         /// <summary>
@@ -312,19 +311,35 @@ namespace Fantome.Libraries.League.IO.Inibin
                 throw new UnsupportedValueTypeException("The type of: " + valueObjectType + "is not supported");
             }
 
-            if (!this.Sets.ContainsKey(valueType))
+            if (!Sets.ContainsKey(valueType))
             {
-                this.Sets.Add(valueType, new InibinSet(valueType));
+                Sets.Add(valueType, new InibinSet(valueType));
             }
 
             try
             {
-                this.Sets[valueType].Properties.Add(hash, value);
+                Sets[valueType].Properties.Add(hash, value);
             }
             catch (ArgumentException)
             {
                 throw new Exception("The property you are trying to add already exists");
             }
+        }
+        public static uint SectionHash(string section, string property)
+        {
+            uint hash = 0;
+            section = section.ToLower();
+            property = property.ToLower();
+            for (int i = 0; i < section.Length; i++)
+            {
+                hash = section[i] + 65599 * hash;
+            }
+            hash = (65599 * hash + 42);
+            for (int i = 0; i < property.Length; i++)
+            {
+                hash = property[i] + 65599 * hash;
+            }
+            return hash;
         }
     }
 
